@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171018231454) do
+ActiveRecord::Schema.define(version: 20171106064032) do
 
   create_table "customers", force: :cascade do |t|
-    t.text "profile_pic"
+    t.text "image_data"
     t.string "first_name"
     t.string "last_name"
     t.string "bio"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20171018231454) do
   end
 
   create_table "owners", force: :cascade do |t|
-    t.text "profile_pic"
+    t.text "image_data"
     t.string "first_name"
     t.string "last_name"
     t.string "bio"

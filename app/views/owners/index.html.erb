@@ -21,7 +21,7 @@
   <tbody>
     <% @owners.each do |owner| %>
       <tr>
-        <td><%= owner.profile_pic %></td>
+        <td><%= owner.image %></td>
         <td><%= owner.first_name %></td>
         <td><%= owner.last_name %></td>
         <td><%= owner.bio %></td>
@@ -37,6 +37,29 @@
     <% end %>
   </tbody>
 </table>
+
+<div style='width: 800px;'>
+  <div id="geolocation" style='width: 800px; height: 400px;'></div>
+</div>
+
+<script type="text/javascript">
+
+var handler = Gmaps.build('Google');
+handler.buildMap({ internal: {id: 'geolocation'} }, function(){
+// be aware chrome >= 50 requires https for geolocation to work
+if(navigator.geolocation)
+  navigator.geolocation.getCurrentPosition(displayOnMap);
+});
+
+function displayOnMap(position){
+var marker = handler.addMarker({
+  lat: position.coords.latitude,
+  lng: position.coords.longitude
+});
+handler.map.centerOn(marker);
+};
+
+</script>
 
 <br>
 

@@ -1,10 +1,22 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_customer, only: [:show, :edit, :destroy]
+  skip_before_action :verify_authenticity_token
   # GET /customers
   # GET /customers.json
   def index
     @customers = Customer.all
+    @owners = Owner.all
+    @customers.each do |customer|
+      puts customer.latitude
+      puts customer.longitude
+    end
+    @hash = Gmaps4rails.build_markers(@owners) do |owner, marker|
+      location_link = view_context.link_to owner.first_name, owner_path(owner)
+      marker.lat owner.latitude
+      marker.lng owner.longitude
+      marker.infowindow "<h4><u>#{location_link}</u></h4>
+                      <i>#{owner.first_name}</i>"
+    end
   end
 
   # GET /customers/1
@@ -25,7 +37,7 @@ class CustomersController < ApplicationController
   # POST /customers.json
   def create
     @customer = Customer.new(customer_params)
-
+    @customer.user = current_user
     respond_to do |format|
       if @customer.save
         format.html { redirect_to @customer, notice: 'Customer was successfully created.' }
@@ -40,15 +52,20 @@ class CustomersController < ApplicationController
   # PATCH/PUT /customers/1
   # PATCH/PUT /customers/1.json
   def update
-    respond_to do |format|
-      if @customer.update(customer_params)
-        format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
-        format.json { render :show, status: :ok, location: @customer }
-      else
-        format.html { render :edit }
-        format.json { render json: @customer.errors, status: :unprocessable_entity }
-      end
-    end
+    @lng = params[:lng]
+    @lat = params[:lat]
+    @customer = Customer.find(current_user.customer.id)
+    @customer.update(latitude: @lat, longitude: @lng)
+    redirect_to root_path
+    # respond_to do |format|
+    #   if @customer.update(customer_params)
+    #     format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
+    #     format.json { render :show, status: :ok, location: @customer }
+    #   else
+    #     format.html { render :edit }
+    #     format.json { render json: @customer.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /customers/1
@@ -69,6 +86,6 @@ class CustomersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def customer_params
-      params.require(:customer).permit(:profile_pic, :first_name, :last_name, :bio, :address, :city, :country, :postcode, :user_id)
+      params.require(:customer).permit(:image, :first_name, :last_name, :bio, :address, :city, :country, :postcode, :user_id)
     end
 end
