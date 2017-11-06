@@ -9,7 +9,11 @@ gem 'devise'
 
 gem 'geocoder'
 
+gem 'gmaps4rails'
+
 gem 'bootstrap', '~> 4.0.0.beta'
+
+gem 'jquery-rails'
 
 gem 'shrine'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :profile_pic %>
-    <%= form.text_area :profile_pic, id: :customer_profile_pic %>
+    <%= form.label :image %>
+    <%= form.file_field :image, id: :customer_image %>
   </div>
 
   <div class="field">
@@ -49,11 +49,6 @@
   <div class="field">
     <%= form.label :postcode %>
     <%= form.number_field :postcode, id: :customer_postcode %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, id: :customer_user_id %>
   </div>
 
   <div class="actions">

@@ -1,5 +1,36 @@
 <p id="notice"><%= notice %></p>
 
+<p><button onclick="geoFindMe()">Show my location</button></p>
+<div id="out"></div>
+<!--
+<p><button onclick="distance()">Find me, Yo.</button></p>
+<div id="out"></div> -->
+<div style='width: 800px;'>
+  <div id="geolocation" style='width: 800px; height: 400px;'></div>
+</div>
+
+<script type="text/javascript">
+jQuery(function($) {
+  var handler = Gmaps.build('Google');
+  handler.buildMap({ internal: {id: 'geolocation'} }, function(){
+  // be aware chrome >= 50 requires https for geolocation to work
+  if(navigator.geolocation)
+    navigator.geolocation.getCurrentPosition(displayOnMap);
+  });
+
+  function displayOnMap(position){
+    $.post('/customers/update',{id: 3, lat: position.coords.latitude, lng: position.coords.longitude});
+    var marker = handler.addMarker({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    });
+
+    handler.map.centerOn(marker);
+  };
+});
+
+</script>
+
 <p>
   <strong>Profile pic:</strong>
   <%= @customer.profile_pic %>

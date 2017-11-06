@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get 'home/index'
+  root 'home#index'
+
+  post '/customers/update' => 'customers#update'
 
   resources :items
   resources :customers
