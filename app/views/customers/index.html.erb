@@ -1,7 +1,9 @@
-<p id="notice"><%= notice %></p>
+<% if @owners.blank? %>
+  <h4>There are no owners containing the term <%= params[:search] %>.</h4>
+<% end %>
 <div class="container-fluid">
   <div style='width: 100%;'>
-    <div id="geolocation" style='width: 100%; height: 400px;'></div>
+    <div id="geolocation" style='width: 100%; height: 80vh;'></div>
   </div>
 </div>
 <script type="text/javascript">
@@ -20,5 +22,3 @@
     // $.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude});};
 
 </script>
-
-<%= link_to 'New Customer', new_customer_path %>

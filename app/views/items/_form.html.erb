@@ -1,3 +1,4 @@
+<div class="center-form">
 <%= form_with(model: item, local: true) do |form| %>
   <% if item.errors.any? %>
     <div id="error_explanation">
@@ -12,17 +13,17 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :image %>
+    <%= form.label :image %><br />
     <%= form.file_field :image, id: :item_image_data %>
   </div>
 
   <div class="field">
-    <%= form.label :caption %>
+    <%= form.label :caption %><br />
     <%= form.text_field :caption, id: :item_caption %>
   </div>
-  
+
   <div class="field">
-      <%= form.label :price %>
+      <%= form.label :price %><br />
       <%= form.text_field :price, id: :product_price %>
     </div>
 
@@ -30,3 +31,4 @@
     <%= form.submit %>
   </div>
 <% end %>
+</div>

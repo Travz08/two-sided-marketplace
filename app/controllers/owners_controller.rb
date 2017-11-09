@@ -6,6 +6,11 @@ class OwnersController < ApplicationController
   # GET /owners.json
   def index
     @owners = Owner.all
+    if params[:search]
+    @owners = Owner.search(params[:search]).order("created_at DESC")
+    else
+      @owners = Owner.all.order("created_at DESC")
+    end
   end
 
   # GET /owners/1
@@ -21,7 +26,11 @@ class OwnersController < ApplicationController
 
   # GET /owners/new
   def new
+    if current_user.owner.present?
+      redirect_to owner_path(current_user.owner.id)
+    else
     @owner = Owner.new
+    end
   end
 
   # GET /owners/1/edit

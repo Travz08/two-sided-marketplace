@@ -1,10 +1,18 @@
 
-<div class="container d-flex">
-
-  <%= link_to 'Find a Charger', customers_path, class: 'btn btn-primary mx-auto' %>
-
-</br>
-
-  <%= link_to 'Lend a Charger', owners_path, class: 'btn btn-primary mx-auto' %>
-
+<div class="container">
+  <div class="buttons d-flex">
+    <% if user_signed_in? && current_user.customer.present? %>
+    <%= link_to 'Find a Charger', customers_path, class: 'btn btn-lg btn-primary mx-auto' %>
+    <% else %>
+    <%= link_to 'Find a Charger', new_customer_path, class: 'btn btn-lg btn-primary mx-auto' %>
+    <% end %>
+  </div>
+  </br>
+  <div class="buttons d-flex">
+  <% if user_signed_in? && current_user.owner.present? %>
+    <%= link_to 'Lend a Charger', owner_path(current_user.owner.id), class: 'btn btn-lg btn-primary mx-auto' %>
+  <% else %>
+    <%= link_to 'Lend a Charger', new_owner_path, class: 'btn btn-lg btn-primary mx-auto' %>
+  <% end %>
+  </div>
 </div>
