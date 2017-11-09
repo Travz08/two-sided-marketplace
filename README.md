@@ -1,11 +1,12 @@
-# Term 2 Hackathon - Pawesome
-# Travis Kelekolio, James Marotta & Carmen Chung
+# Term 2 Two Sided Marketplace - PowerBanker
+# Travis Kelekolio
 
 ## Task
-We were tasked with creating an online store (with one seller, multiple products, and multiple customers) using Ruby on Rails within 1.5 days.
+I was tasked to design, build, deploy and present a Ruby on Rails application.
+This application is to be a two sided marketplace. This app is to cater to two markets that the app brings together.
 
 ## Synopsis
-Our online store is a web app for a dog rescue shelter that allows them to post the dogs available for adoption, including information such as name, breed, age (determined by calculating current year minus year of birth), gender, whether the dog has been neutered and/or vaccinated, adoption fee etc. Each dog has its own profile with detailed information.
+My application is a an app for customers to be ale to find available power banks/portable chargers nearby through Google Maps API that are owned by other users.
 
 A user can search key parameters when browsing the dogs available, including name, age, gender and breed. They can also login/sign up to save (i.e. favourite) the dogs they wish to view again. If there is a particular dog they are interested in adopting, they can message the rescue shelter via the website.
 
@@ -125,9 +126,6 @@ $ bundle
 
 APIs used:
 Google maps API on the Contact page.
-
-## Image optimiser
-We used optimizilla.com to make sure all our images were as small as possible.
 
 ## Design & Planning
 We created the following user stories using Trello.

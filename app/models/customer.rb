@@ -1,6 +1,5 @@
 class Customer < ApplicationRecord
   belongs_to :user
-  has_many :messages
   has_many :items
   geocoded_by :address
   after_validation :geocode

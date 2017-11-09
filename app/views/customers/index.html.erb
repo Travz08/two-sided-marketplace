@@ -1,23 +1,23 @@
 <p id="notice"><%= notice %></p>
-
-<div style='width: 800px;'>
-  <div id="geolocation" style='width: 800px; height: 400px;'></div>
+<div class="container-fluid">
+  <div style='width: 100%;'>
+    <div id="geolocation" style='width: 100%; height: 400px;'></div>
+  </div>
 </div>
-
 <script type="text/javascript">
   markers_json = <%=raw @hash.to_json%>;
   markers_json.unshift({"lat":<%= current_user.customer.latitude %>,"lng":<%= current_user.customer.longitude %>,
   infowindow: "<h4><u>Me :3</u></h4><i><%=current_user.customer.first_name%>'s location'</i>"});
   var handler = Gmaps.build('Google');
   handler.buildMap({ internal: {id: 'geolocation'}}, function(){
-    if(navigator.geolocation)
-      navigator.geolocation.getCurrentPosition(displayOnMap);
+    // if(navigator.geolocation)
+    //   navigator.geolocation.getCurrentPosition(displayOnMap);
     var markers = handler.addMarkers(markers_json);
     handler.bounds.extendWith(markers);
-    // handler.fitMapToBounds();
+    handler.fitMapToBounds();
     });
-  function displayOnMap(position){
-    $.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude});};
+  // function displayOnMap(position){
+    // $.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude});};
 
 </script>
 

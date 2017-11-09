@@ -6,6 +6,8 @@ git_source(:github) do |repo_name|
 end
 # User database
 gem 'devise'
+# Ignore Keys in .env file
+gem 'dotenv-rails', groups: [:development, :test]
 # Retrieve user locaion
 gem 'geocoder'
 # Displaying locations on map
