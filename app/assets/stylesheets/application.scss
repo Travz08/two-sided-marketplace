@@ -1,3 +1,39 @@
 @import "bootstrap";
 @import "home";
 @import "owners";
+
+
+html {min-height: 100%;}
+
+body {
+    background-color: #fff;
+    background-image: linear-gradient(-134deg, #3023AE 0%, #C86DD7 100%);
+}
+.messages-list {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+.message-sent {
+  position: relative;
+  background-color: #D9EDF7;
+  border-color: #BCE8F1;
+  margin: 5px 20px;
+  padding: 10px;
+  float: right;
+}
+
+
+.message-received {
+  background-color: #F1F0F0;
+  border-color: #EEEEEE;
+  margin: 5px 20px;
+  padding: 10px;
+  float: left;
+}
+
+.message-float {
+  width: 100%;
+}

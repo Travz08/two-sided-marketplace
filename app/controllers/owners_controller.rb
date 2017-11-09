@@ -1,4 +1,5 @@
 class OwnersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_owner, only: [:show, :edit, :update, :destroy]
 
   # GET /owners
@@ -10,7 +11,12 @@ class OwnersController < ApplicationController
   # GET /owners/1
   # GET /owners/1.json
   def show
-    @items = Item.all
+    @items = Item.where(owner_id: @owner.id)
+    session[:conversations] ||= []
+
+     @users = User.all.where.not(id: current_user)
+     @conversations = Conversation.includes(:recipient, :messages)
+                                  .find(session[:conversations])
   end
 
   # GET /owners/new

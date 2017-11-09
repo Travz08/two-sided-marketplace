@@ -1,4 +1,5 @@
 class ItemsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   # GET /items
@@ -25,6 +26,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
+    @item.owner = Owner.find_by(user_id: current_user.id)
 
     respond_to do |format|
       if @item.save
@@ -69,6 +71,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:image_data, :caption, :owner_id)
+      params.require(:item).permit(:image, :caption, :price, :owner_id)
     end
 end

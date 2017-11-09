@@ -1,6 +1,5 @@
 <p id="notice"><%= notice %></p>
 <% if @owner.present? %>
-
 <div class="jumbotron">
   <div class="container">
     <div class="media">
@@ -19,15 +18,57 @@
   </div>
 </div>
 <p id="notice"><%= notice %></p>
+<div class="container">
+  <div class="col-md-9">
+     <ul id="conversations-list">
+       <% @conversations.each do |conversation| %>
+         <%= render 'conversations/conversation', conversation: conversation, user: current_user %>
+       <% end %>
+     </ul>
+   </div>
 
+   <div class="col-md-3">
+     <div class="card card-primary">
+       <div class="card-heading">
+         <h3 class="card-title">User list</h3>
+       </div>
+       <div class="card-body">
+         <ul>
+           <% @users.each do |user| %>
+             <li><%= link_to user.email, conversations_path(user_id: user), remote: true, method: :post %></li>
+           <% end %>
+         </ul>
+       </div>
+     </div>
+   </div>
+  </div>
+</div>
 <!-- <#% @photos.each_slice(3) do |photos| %>
   <div class="row no-gutters margin-row"> -->
 <div class="container-fluid">
-  <% if @items.exists? %>
-  <% @items.each do |item| %>
-      <img class="col-4 col-md-4 owner-post" src='<%=item.image_url %>'>
+  <% if @items.present? %>
+  <% @items.each_slice(3) do |items| %>
+    <div class="row no-gutters margin-row">
+      <% items.each do |item| %>
+        <div class="col-4 card" style="width: 20rem;">
+         <%= image_tag(item.image_url, class: "card-img-top mx-auto")  %>
+          <div class="card-body">
+            <h4 class="card-title"><%= item.caption %></h4>
+            <h5>$<%= item.price.to_i %></h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <%= link_to 'View', item, class: "btn btn-primary" %>
+            <% if item.owner == current_user.owner %>
+              <%= link_to 'Edit', edit_item_path(item), class: "btn btn-success" %>
+              <%= link_to 'Destroy', item, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% else %>
+              <%= link_to 'Buy', new_charge_path(item_id: item.id), class: "btn btn-success" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   <% end %>
-  <% end %>
+<% end %>
 </div>
 <!-- <#% end %> -->
 <% else %>

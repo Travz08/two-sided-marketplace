@@ -1,47 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Customers</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Profile pic</th>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Bio</th>
-      <th>Address</th>
-      <th>City</th>
-      <th>Country</th>
-      <th>Postcode</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @customers.each do |customer| %>
-      <tr>
-        <td><%= customer.image %></td>
-        <td><%= customer.first_name %></td>
-        <td><%= customer.last_name %></td>
-        <td><%= customer.bio %></td>
-        <td><%= customer.address %></td>
-        <td><%= customer.city %></td>
-        <td><%= customer.country %></td>
-        <td><%= customer.postcode %></td>
-        <td><%= customer.user %></td>
-        <td><%= link_to 'Show', customer, class: "btn btn-primary" %></td>
-        <td><%= link_to 'Edit', edit_customer_path(customer) %></td>
-        <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
 <div style='width: 800px;'>
-  <div id="multi_markers" style='width: 800px; height: 400px;'></div>
+  <div id="geolocation" style='width: 800px; height: 400px;'></div>
 </div>
 
 <script type="text/javascript">
@@ -49,11 +9,15 @@
   markers_json.unshift({"lat":<%= current_user.customer.latitude %>,"lng":<%= current_user.customer.longitude %>,
   infowindow: "<h4><u>Me :3</u></h4><i><%=current_user.customer.first_name%>'s location'</i>"});
   var handler = Gmaps.build('Google');
-  handler.buildMap({ internal: {id: 'multi_markers'}}, function(){
+  handler.buildMap({ internal: {id: 'geolocation'}}, function(){
+    if(navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(displayOnMap);
     var markers = handler.addMarkers(markers_json);
     handler.bounds.extendWith(markers);
-     handler.fitMapToBounds();
+    // handler.fitMapToBounds();
     });
+  function displayOnMap(position){
+    $.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude});};
 
 </script>
 
