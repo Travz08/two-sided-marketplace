@@ -32,14 +32,9 @@
           <% else %>
           <%= link_to 'Lender', new_owner_path, class: "dropdown-item" %>
           <% end%>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
       <% end %>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
     </ul>
     <% if user_signed_in? && params[:action] == "index" && params[:controller] == "customers" %>
       <%= form_tag(customers_path, :method => "get", id: "search-form", class: "form-inline my-2 my-lg-0") do %>

@@ -12,7 +12,7 @@
         </br>
           <%= link_to 'Lend a Charger', new_item_path, class: 'btn btn-primary btn-block' %>
         <% else %>
-          <%= link_to "Send Message", conversations_path(user_id: @owner.user), remote: true, method: :post %>
+          <%= link_to "Send Message", conversations_path(user_id: @owner.user), remote: true, method: :post, class: 'btn btn-primary btn-block' %>
         <% end %>
         <p><%= @owner.user.email %></br><%= @owner.bio %></p>
       </div>

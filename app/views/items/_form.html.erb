@@ -1,34 +1,36 @@
-<div class="center-form">
-<%= form_with(model: item, local: true) do |form| %>
-  <% if item.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+<div class="container form-width">
+  <div class="center-form login-form">
+    <%= form_with(model: item, local: true) do |form| %>
+      <% if item.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
 
-      <ul>
-      <% item.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+          <ul>
+          <% item.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="field">
-    <%= form.label :image %><br />
-    <%= form.file_field :image, id: :item_image_data %>
+      <div class="form-group">
+        <%= form.label :image %><br />
+        <%= form.file_field :image, id: :item_image_data, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :caption %><br />
+        <%= form.text_field :caption, id: :item_caption, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+          <%= form.label :price %><br />
+          <%= form.text_field :price, id: :product_price, class: "form-control" %>
+        </div>
+
+      <div class="actions">
+        <%= form.submit "Lend Charger", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="field">
-    <%= form.label :caption %><br />
-    <%= form.text_field :caption, id: :item_caption %>
-  </div>
-
-  <div class="field">
-      <%= form.label :price %><br />
-      <%= form.text_field :price, id: :product_price %>
-    </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
 </div>
