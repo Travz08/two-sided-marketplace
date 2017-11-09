@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20171125030703) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "conversations", force: :cascade do |t|
     t.integer "recipient_id"
     t.integer "sender_id"
@@ -29,7 +32,7 @@ ActiveRecord::Schema.define(version: 20171125030703) do
     t.string "city"
     t.string "country"
     t.integer "postcode"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "latitude"
@@ -40,7 +43,7 @@ ActiveRecord::Schema.define(version: 20171125030703) do
   create_table "items", force: :cascade do |t|
     t.text "image_data"
     t.string "caption"
-    t.integer "owner_id"
+    t.bigint "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "price", precision: 8, scale: 2
@@ -49,8 +52,8 @@ ActiveRecord::Schema.define(version: 20171125030703) do
 
   create_table "messages", force: :cascade do |t|
     t.text "body"
-    t.integer "user_id"
-    t.integer "conversation_id"
+    t.bigint "user_id"
+    t.bigint "conversation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
@@ -66,7 +69,7 @@ ActiveRecord::Schema.define(version: 20171125030703) do
     t.string "city"
     t.string "country"
     t.integer "postcode"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "latitude"
@@ -75,8 +78,8 @@ ActiveRecord::Schema.define(version: 20171125030703) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "item_id"
+    t.bigint "user_id"
+    t.bigint "item_id"
     t.string "charge_id"
     t.integer "amount"
     t.datetime "created_at", null: false
@@ -103,4 +106,11 @@ ActiveRecord::Schema.define(version: 20171125030703) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "customers", "users"
+  add_foreign_key "items", "owners"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users"
+  add_foreign_key "owners", "users"
+  add_foreign_key "transactions", "items"
+  add_foreign_key "transactions", "users"
 end
