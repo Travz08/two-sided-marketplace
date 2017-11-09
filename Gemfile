@@ -18,6 +18,8 @@ gem 'bootstrap', '~> 4.0.0.beta'
 gem 'jquery-rails'
 # Image uploader
 gem 'shrine'
+# cloud for our shrine images(Deployment)
+gem 'shrine-cloudinary'
 # Payment system
 gem 'stripe'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
