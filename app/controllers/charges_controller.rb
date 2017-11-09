@@ -22,7 +22,10 @@ class ChargesController < ApplicationController
    @transaction = Transaction.create(user_id: current_user.id, charge_id: charge.id, charge_id: @item.id, amount: @amount)
    @transaction.user = current_user
    @transaction.save
-
+   email = current_user.email
+   contact_name = current_user.customer.first_name
+   message = @transaction.charge_id
+   ContactMailer.send_contact_email(email, contact_name, message).deliver_now
   else
     charge = StripeTool.create_charge(customer_id: current_user.stripe_id,
     amount: @amount,
@@ -31,6 +34,10 @@ class ChargesController < ApplicationController
     @transaction = Transaction.create(user_id: current_user.id, item_id: @item.id, charge_id: charge.id, amount: @amount)
     @transaction.user = current_user
     @transaction.save
+    email = current_user.email
+    contact_name = current_user.customer.first_name
+    message = @transaction.charge_id
+    ContactMailer.send_contact_email(email, contact_name, message).deliver_now
   end
  rescue Stripe::CardError => e
    flash[:error] = e.message

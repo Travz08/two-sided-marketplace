@@ -19,7 +19,7 @@ jQuery(function($) {
   });
 
   function displayOnMap(position){
-    $.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude});
+    // $.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude});
     var marker = handler.addMarker({
       lat: position.coords.latitude,
       lng: position.coords.longitude
