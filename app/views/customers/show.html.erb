@@ -19,7 +19,7 @@ jQuery(function($) {
   });
 
   function displayOnMap(position){
-    $.post('/customers/update',{id: 3, lat: position.coords.latitude, lng: position.coords.longitude});
+    $.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude});
     var marker = handler.addMarker({
       lat: position.coords.latitude,
       lng: position.coords.longitude
@@ -33,7 +33,7 @@ jQuery(function($) {
 
 <p>
   <strong>Profile pic:</strong>
-  <%= @customer.profile_pic %>
+  <%= @customer.image %>
 </p>
 
 <p>

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light">
   <a class="navbar-brand" href="#">Charge</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -9,20 +9,34 @@
       <li class="nav-item active">
         <%= link_to 'Home', root_path, class: 'nav-link' %>
       </li>
+      <% if user_signed_in? %>
       <li class="nav-item">
         <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
       </li>
+      <% else %>
+        <%= link_to 'Log In', new_user_session_path, class: 'nav-link' %>
+      <% end %>
+      <% if user_signed_in? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
+          My Profile
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
+          <% if current_user.customer.present? %>
+          <%= link_to 'Finder', customer_path(current_user.customer.id), class: "dropdown-item" %>
+          <% else %>
+          <%= link_to 'Finder', new_customer_path, class: "dropdown-item" %>
+          <% end%>
+          <% if current_user.owner.present? %>
+          <%= link_to 'Lender', owner_path(current_user.owner.id), class: "dropdown-item" %>
+          <% else %>
+          <%= link_to 'Lender', new_owner_path, class: "dropdown-item" %>
+          <% end%>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
+      <% end %>
       <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
       </li>

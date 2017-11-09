@@ -1,6 +1,8 @@
 class CustomersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_customer, only: [:show, :edit, :destroy]
   skip_before_action :verify_authenticity_token
+
   # GET /customers
   # GET /customers.json
   def index
@@ -36,11 +38,13 @@ class CustomersController < ApplicationController
   # POST /customers
   # POST /customers.json
   def create
-    @customer = Customer.new(customer_params)
+    @lng = params[:lng]
+    @lat = params[:lat]
+    @customer = Customer.new(params.require(:customer).permit(:image, :first_name, :last_name, :bio, :address, :city, :country, :postcode, :user_id, latitude: :lat, longitude: :lng))
     @customer.user = current_user
     respond_to do |format|
       if @customer.save
-        format.html { redirect_to @customer, notice: 'Customer was successfully created.' }
+        format.html { redirect_to customers_path, notice: 'Customer was successfully created.' }
         format.json { render :show, status: :created, location: @customer }
       else
         format.html { render :new }
@@ -49,23 +53,27 @@ class CustomersController < ApplicationController
     end
   end
 
+  def location
+    @lng = params[:lng]
+    @lat = params[:lat]
+    puts @lng + "hello"
+    @customer = Customer.find(current_user.customer.id)
+    @customer.update(latitude: @lat, longitude: @lng)
+    @customer.save
+  end
+
   # PATCH/PUT /customers/1
   # PATCH/PUT /customers/1.json
   def update
-    @lng = params[:lng]
-    @lat = params[:lat]
-    @customer = Customer.find(current_user.customer.id)
-    @customer.update(latitude: @lat, longitude: @lng)
-    redirect_to root_path
-    # respond_to do |format|
-    #   if @customer.update(customer_params)
-    #     format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
-    #     format.json { render :show, status: :ok, location: @customer }
-    #   else
-    #     format.html { render :edit }
-    #     format.json { render json: @customer.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    respond_to do |format|
+      if @customer.update(customer_params)
+        format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
+        format.json { render :show, status: :ok, location: @customer }
+      else
+        format.html { render :edit }
+        format.json { render json: @customer.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # DELETE /customers/1

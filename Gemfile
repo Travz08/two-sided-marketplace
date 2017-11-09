@@ -4,18 +4,20 @@ git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
-
+# User database
 gem 'devise'
-
+# Retrieve user locaion
 gem 'geocoder'
-
+# Displaying locations on map
 gem 'gmaps4rails'
-
+# Bootstrap scss
 gem 'bootstrap', '~> 4.0.0.beta'
 
 gem 'jquery-rails'
-
+# Image uploader
 gem 'shrine'
+# Payment system
+gem 'stripe'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use sqlite3 as the database for Active Record

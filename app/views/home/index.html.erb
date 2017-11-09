@@ -1,14 +1,10 @@
 
 <div class="container d-flex">
 
+  <%= link_to 'Find a Charger', customers_path, class: 'btn btn-primary mx-auto' %>
 
-<% if current_user.present? %>
-<%= link_to 'Find a Charger', customers_path, class: 'btn btn-primary mx-auto' %>
-<br/>
-<%= link_to 'Lend a Charger', owners_path, class: 'btn btn-primary mx-auto' %>
-<% else %>
-<%= link_to 'log in', new_user_session_path, class: 'btn btn-primary' %>
-<% end %>
+</br>
 
+  <%= link_to 'Lend a Charger', owners_path, class: 'btn btn-primary mx-auto' %>
 
 </div>
