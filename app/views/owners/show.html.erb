@@ -11,6 +11,8 @@
           <%= link_to 'Edit', edit_owner_path, class: 'btn btn-secondary btn-block' %>
         </br>
           <%= link_to 'Lend a Charger', new_item_path, class: 'btn btn-primary btn-block' %>
+        <% else %>
+          <%= link_to "Send Message", conversations_path(user_id: @owner.user), remote: true, method: :post %>
         <% end %>
         <p><%= @owner.user.email %></br><%= @owner.bio %></p>
       </div>
@@ -26,7 +28,7 @@
        <% end %>
      </ul>
    </div>
-
+   <% if current_user == @owner.user %>
    <div class="col-md-3">
      <div class="card card-primary">
        <div class="card-heading">
@@ -34,19 +36,18 @@
        </div>
        <div class="card-body">
          <ul>
-           <% if current_user != @owner.user %>
-               <li><%= link_to @owner.user.email, conversations_path(user_id: @owner.user), remote: true, method: :post %></li>
-           <% else %>
+
              <% @users.each do |user| %>
                <li><%= link_to user.email, conversations_path(user_id: user), remote: true, method: :post %></li>
              <% end %>
-           <% end %>
+
          </ul>
        </div>
      </div>
    </div>
   </div>
 </div>
+<% end %>
 <div class="container-fluid">
   <% if @items.present? %>
     <% @items.each do |item| %>
