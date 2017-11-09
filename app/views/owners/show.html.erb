@@ -9,6 +9,8 @@
         <span class="mt-0 display-4"><%= @owner.first_name %> <%= @owner.last_name %></span>
         <% if @owner.user == current_user %>
           <%= link_to 'Edit', edit_owner_path, class: 'btn btn-secondary btn-block' %>
+        </br>
+          <%= link_to 'Lend a Charger', new_item_path, class: 'btn btn-primary btn-block' %>
         <% end %>
         <p><%= @owner.user.email %></br><%= @owner.bio %></p>
       </div>
@@ -32,8 +34,12 @@
        </div>
        <div class="card-body">
          <ul>
-           <% @users.each do |user| %>
-             <li><%= link_to user.email, conversations_path(user_id: user), remote: true, method: :post %></li>
+           <% if current_user != @owner.user %>
+               <li><%= link_to @owner.user.email, conversations_path(user_id: @owner.user), remote: true, method: :post %></li>
+           <% else %>
+             <% @users.each do |user| %>
+               <li><%= link_to user.email, conversations_path(user_id: user), remote: true, method: :post %></li>
+             <% end %>
            <% end %>
          </ul>
        </div>
@@ -41,34 +47,40 @@
    </div>
   </div>
 </div>
-<!-- <#% @photos.each_slice(3) do |photos| %>
-  <div class="row no-gutters margin-row"> -->
 <div class="container-fluid">
   <% if @items.present? %>
-  <% @items.each_slice(3) do |items| %>
-    <div class="row no-gutters margin-row">
-      <% items.each do |item| %>
-        <div class="col-4 card" style="width: 20rem;">
-         <%= image_tag(item.image_url, class: "card-img-top mx-auto")  %>
-          <div class="card-body">
-            <h4 class="card-title"><%= item.caption %></h4>
-            <h5>$<%= item.price.to_i %></h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <%= link_to 'View', item, class: "btn btn-primary" %>
-            <% if item.owner == current_user.owner %>
-              <%= link_to 'Edit', edit_item_path(item), class: "btn btn-success" %>
-              <%= link_to 'Destroy', item, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
-            <% else %>
-              <%= link_to 'Buy', new_charge_path(item_id: item.id), class: "btn btn-success" %>
+    <% @items.each do |item| %>
+      <div class="col-12 card mx-auto" style="width: 20rem;">
+       <%= image_tag(item.image_url, class: "card-img-top mx-auto")  %>
+        <div class="card-body">
+          <h4 class="card-title"><%= item.caption %></h4>
+          <h5>$<%= item.price.to_i %></h5>
+          <% if item.owner == current_user.owner %>
+            <%= link_to 'Edit', edit_item_path(item), class: "btn btn-primary" %>
+            <%= link_to 'Destroy', item, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% else %>
+            <%= form_tag charges_path(item_id: item.id) do %>
+              <article>
+                <% if flash[:error].present? %>
+                  <div id="error_explanation">
+                    <p><%= flash[:error] %></p>
+                  </div>
+                <% end %>
+              </article>
+
+              <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                      data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+                      data-description="A month's subscription"
+                      data-amount="<%= item.price * 100%>"
+                      data-email="<%= current_user.email %>"
+                      data-locale="auto"></script>
             <% end %>
-          </div>
+          <% end %>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   <% end %>
-<% end %>
 </div>
-<!-- <#% end %> -->
 <% else %>
 <p>This User doesnt have a owner</p>
 <%= link_to "Back", root_path, class: "btn btn-primary" %>

@@ -1,2 +1,4 @@
-<h2>Thanks, you paid <strong>$<%= @item.price %></strong>!</h2>
-<%= @customer_obj.inspect %>
+<div class="center-form trans-sent">
+<h2>Thank you for using PowerBanker! Your total price is: <strong>$<%= @item.price.to_i %></strong>!</h2>
+<h3>An email of your receipt has been sent to <%= current_user.email %></h3>
+</div>

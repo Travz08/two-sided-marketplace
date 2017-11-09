@@ -26,7 +26,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
-    @item.owner = Owner.where(user_id: current_user.id)
+    @item.owner = current_user.owner
 
     respond_to do |format|
       if @item.save
