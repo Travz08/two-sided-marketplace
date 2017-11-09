@@ -8,6 +8,11 @@ class CustomersController < ApplicationController
   def index
     @customers = Customer.all
     @owners = Owner.all
+    if params[:search]
+    @owners = Owner.search(params[:search]).order("created_at DESC")
+    else
+      @owners = Owner.all.order("created_at DESC")
+    end
     @customers.each do |customer|
       puts customer.latitude
       puts customer.longitude
@@ -28,7 +33,11 @@ class CustomersController < ApplicationController
 
   # GET /customers/new
   def new
+    if current_user.customer.present?
+      redirect_to customer_path(current_user.customer.id)
+    else
     @customer = Customer.new
+    end
   end
 
   # GET /customers/1/edit
@@ -38,9 +47,9 @@ class CustomersController < ApplicationController
   # POST /customers
   # POST /customers.json
   def create
-    @lng = params[:lng]
-    @lat = params[:lat]
-    @customer = Customer.new(params.require(:customer).permit(:image, :first_name, :last_name, :bio, :address, :city, :country, :postcode, :user_id, latitude: :lat, longitude: :lng))
+    # @lng = params[:lng]
+    # @lat = params[:lat]
+    @customer = Customer.new(customer_params)
     @customer.user = current_user
     respond_to do |format|
       if @customer.save
@@ -53,14 +62,14 @@ class CustomersController < ApplicationController
     end
   end
 
-  def location
-    @lng = params[:lng]
-    @lat = params[:lat]
-    puts @lng + "hello"
-    @customer = Customer.find(current_user.customer.id)
-    @customer.update(latitude: @lat, longitude: @lng)
-    @customer.save
-  end
+  # def location
+  #   @lng = params[:lng]
+  #   @lat = params[:lat]
+  #   puts @lng + "hello"
+  #   @customer = Customer.find(current_user.customer.id)
+  #   @customer.update(latitude: @lat, longitude: @lng)
+  #   @customer.save
+  # end
 
   # PATCH/PUT /customers/1
   # PATCH/PUT /customers/1.json

@@ -1,4 +1,6 @@
-<p id="notice"><%= notice %></p>
+<% if @owners.blank? %>
+  <h4>There are no owners containing the term <%= params[:search] %>.</h4>
+<% end %>
 
 <h1>Owners</h1>
 <%= link_to 'Lend a Charger', new_item_path, class: 'btn btn-primary' %>

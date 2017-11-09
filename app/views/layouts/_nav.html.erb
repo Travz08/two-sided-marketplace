@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light">
-  <a class="navbar-brand" href="#">Charge</a>
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="/">PowerBanker</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -41,9 +41,17 @@
         <a class="nav-link disabled" href="#">Disabled</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <% if user_signed_in? && params[:action] == "index" && params[:controller] == "customers" %>
+      <%= form_tag(customers_path, :method => "get", id: "search-form", class: "form-inline my-2 my-lg-0") do %>
+          <%= text_field_tag :search, params[:search], placeholder: "Search Lenders", class: "form-control mr-sm-2" %>
+          <%= submit_tag "Search", :name => nil, class: "btn btn-outline-success my-2 my-sm-0" %>
+      <% end %>
+    <% end %>
+    <% if user_signed_in? && params[:action] == "index" && params[:controller] == "owners" %>
+      <%= form_tag(owners_path, :method => "get", id: "search-form") do %>
+          <%= text_field_tag :search, params[:search], placeholder: "Search Owners" %>
+          <%= submit_tag "Search", :name => nil %>
+      <% end %>
+    <% end %>
   </div>
 </nav>

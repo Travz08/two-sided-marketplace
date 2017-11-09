@@ -1,62 +1,61 @@
-<%= form_with(model: owner, local: true) do |form| %>
-  <% if owner.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(owner.errors.count, "error") %> prohibited this owner from being saved:</h2>
+<div class="form-width mx-auto">
+<div class="center-form">
+  <%= form_with(model: owner, local: true) do |form| %>
+    <% if owner.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(owner.errors.count, "error") %> prohibited this owner from being saved:</h2>
 
-      <ul>
-      <% owner.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+        <ul>
+        <% owner.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :image %></br>
+      <%= form.file_field :image, id: :owner_image, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :first_name %></br>
+      <%= form.text_field :first_name, id: :owner_first_name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :last_name %></br>
+      <%= form.text_field :last_name, id: :owner_last_name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :bio %></br>
+      <%= form.text_field :bio, id: :owner_bio, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :address %></br>
+      <%= form.text_field :address, id: :owner_address, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :city %></br>
+      <%= form.text_field :city, id: :owner_city, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :country %></br>
+      <%= form.text_field :country, id: :owner_country, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :postcode %></br>
+      <%= form.number_field :postcode, id: :owner_postcode, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "Create Lender", class: "btn btn-primary" %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :image %>
-    <%= form.file_field :image, id: :owner_image %>
-  </div>
-
-  <div class="field">
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name, id: :owner_first_name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name, id: :owner_last_name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :bio %>
-    <%= form.text_field :bio, id: :owner_bio %>
-  </div>
-
-  <div class="field">
-    <%= form.label :address %>
-    <%= form.text_field :address, id: :owner_address %>
-  </div>
-
-  <div class="field">
-    <%= form.label :city %>
-    <%= form.text_field :city, id: :owner_city %>
-  </div>
-
-  <div class="field">
-    <%= form.label :country %>
-    <%= form.text_field :country, id: :owner_country %>
-  </div>
-
-  <div class="field">
-    <%= form.label :postcode %>
-    <%= form.number_field :postcode, id: :owner_postcode %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, id: :owner_user_id %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>
+</div>
