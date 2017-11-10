@@ -1,8 +1,29 @@
-<p><button onclick="geoFindMe()">Show my location</button></p>
-<div id="out"></div>
-<!--
-<p><button onclick="distance()">Find me, Yo.</button></p>
-<div id="out"></div> -->
+<% if @customer.present? %>
+<div class="jumbotron">
+  <div class="container">
+    <div class="media">
+      <% if @customer.image.present? %>
+      <%= image_tag(@customer.image_url, class: "image d-flex") %>
+      <% end %>
+      <div class="media-body">
+        <span class="mt-0 display-4"><%= @customer.first_name %> <%= @customer.last_name %></span>
+        <% if @customer.user == current_user %>
+          <%= link_to 'Edit', edit_customer_path, class: 'btn btn-secondary btn-block' %>
+        <% else %>
+          <%= link_to "Send Message", conversations_path(user_id: @customer.user), remote: true, method: :post, class: 'btn btn-primary btn-block' %>
+        <% end %>
+        <p><%= @customer.user.email %></br><%= @customer.bio %></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<% else %>
+<p>This User doesnt have a Profile</p>
+<%= link_to "Back", root_path, class: "btn btn-primary" %>
+<% end %>
+
 <div style='width: 800px;'>
   <div id="geolocation" style='width: 800px; height: 400px;'></div>
 </div>
@@ -29,50 +50,4 @@ jQuery(function($) {
 
 </script>
 
-<p>
-  <strong>Profile pic:</strong>
-  <%= @customer.image %>
-</p>
-
-<p>
-  <strong>First name:</strong>
-  <%= @customer.first_name %>
-</p>
-
-<p>
-  <strong>Last name:</strong>
-  <%= @customer.last_name %>
-</p>
-
-<p>
-  <strong>Bio:</strong>
-  <%= @customer.bio %>
-</p>
-
-<p>
-  <strong>Address:</strong>
-  <%= @customer.address %>
-</p>
-
-<p>
-  <strong>City:</strong>
-  <%= @customer.city %>
-</p>
-
-<p>
-  <strong>Country:</strong>
-  <%= @customer.country %>
-</p>
-
-<p>
-  <strong>Postcode:</strong>
-  <%= @customer.postcode %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @customer.user %>
-</p>
-
-<%= link_to 'Edit', edit_customer_path(@customer) %> |
 <%= link_to 'Back', customers_path %>

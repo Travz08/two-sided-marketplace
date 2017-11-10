@@ -62,14 +62,14 @@ class CustomersController < ApplicationController
     end
   end
 
-  # def location
-  #   @lng = params[:lng]
-  #   @lat = params[:lat]
-  #   puts @lng + "hello"
-  #   @customer = Customer.find(current_user.customer.id)
-  #   @customer.update(latitude: @lat, longitude: @lng)
-  #   @customer.save
-  # end
+  def location
+    @lng = params[:lng]
+    @lat = params[:lat]
+    puts @lng
+    @customer = Customer.find(current_user.customer.id)
+    @customer.update(latitude: @lat, longitude: @lng)
+    @customer.save
+  end
 
   # PATCH/PUT /customers/1
   # PATCH/PUT /customers/1.json

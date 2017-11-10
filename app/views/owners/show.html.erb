@@ -17,9 +17,9 @@
         <p><%= @owner.user.email %></br><%= @owner.bio %></p>
       </div>
     </div>
-
   </div>
 </div>
+
 <div class="container">
   <div class="col-md-9">
      <ul id="conversations-list">
@@ -46,7 +46,6 @@
      </div>
    </div>
   </div>
-</div>
 <% end %>
 <div class="container-fluid">
   <% if @items.present? %>
@@ -86,5 +85,3 @@
 <p>This User doesnt have a owner</p>
 <%= link_to "Back", root_path, class: "btn btn-primary" %>
 <% end %>
-<%= link_to 'Edit', edit_owner_path(@owner) %> |
-<%= link_to 'Back', owners_path %>

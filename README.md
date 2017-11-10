@@ -3,27 +3,20 @@
 
 ## Task
 I was tasked to design, build, deploy and present a Ruby on Rails application.
-This application is to be a two sided marketplace. This app is to cater to two markets that the app brings together.
+This application is to be a two sided marketplace and cater to two markets that the app brings together.
 
 ## Synopsis
-My application is a an app for customers to be ale to find available power banks/portable chargers nearby through Google Maps API that are owned by other users.
+My application is a an app for customers to be able to find available power banks/portable chargers nearby through Google Maps API that are owned by other users.
 
-A user can search key parameters when browsing the dogs available, including name, age, gender and breed. They can also login/sign up to save (i.e. favourite) the dogs they wish to view again. If there is a particular dog they are interested in adopting, they can message the rescue shelter via the website.
-
-The rescue shelter can login as admin and see the messages that users have sent about particular dogs, as well as see which dogs have been favourited the most. Admin access is available upon request.
+A user can login/sign up to view other users nearby who are willing to lend a portable charger. They then can also search key parameters when browsing for users available. Once a lender, the user can create the item they are lending and display their location where it will be available for nearby customers.
 
 ## Configuration and Setup - Rails conventions
-We used Robucop as a code analysis tool. and Guard gem with live-reload for speedier refreshing
+I used Robucop as a code analysis tool. and Guard gem with live-reload for speedier refreshing
 To add Rubocop gem
 
 ```
 $ gem install rubocop
 ```
-This can be quite a daunting gem if done out of the blue, we initially got 229 offences.
-
-if you run with -a you can utilise the autocorrect from rubocop but it is experimental.
-
-Running with -a got us down to 90 offences
 You can then run
 ```
 $ rubocop --auto-gen-config
@@ -55,121 +48,82 @@ $ rubocop
 and it will list errors, fix them, then clear that section of rubocop.yml and then enable the next section.
 continue until you have none left and integrate this into your regular test suite.
 
-  The TODO file then becomes exceptions in your code base that are very close to the Rubocop minimums that raises errors and you can adjust
-
-  Main problems we had was a lines too long, methods too long and blocks too long. For juniors this will improve as we get better at using less code to do more. With more efficient methods.
-
-## guard and guard-livereload
-
-Make sure you have guard installed follow instructions here : https://github.com/guard/guard
-
-Instructions are summarised here for you:
-
-Add Guard (and any other dependencies) to a Gemfile in your project’s root:
-```
-group :development do
-  gem 'guard'
-end
-```
-then install it by running Bundler:
-```
-$ bundle
-```
-Generate an empty Guardfile with:
-```
-$ bundle exec guard init
-```
-
-for guard live reload
-
-Install the gem:
-```
-$ gem install guard-livereload
-```
-Add it to your Gemfile (inside development group):
-```
-group :development do
-  gem 'guard-livereload', '~> 2.5', require: false
-end
-```
-Add guard definition to your Guardfile by running this command:
-```
-$ guard init livereload
-```  
-
-You will need the chrome extention for live reload, which is found here: https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei
-
 ## Ruby gems / APIs used
-The following gems were used: (this whole section can be copied to your gemfile)
+The following gems were used:
 ```
 # User database
 gem 'devise'
+# Ignore Keys in .env file
+gem 'dotenv-rails', groups: [:development, :test]
 # Retrieve user locaion
 gem 'geocoder'
 # Displaying locations on map
 gem 'gmaps4rails'
 # Bootstrap scss
 gem 'bootstrap', '~> 4.0.0.beta'
-# J-query for Rails
+
 gem 'jquery-rails'
 # Image uploader
 gem 'shrine'
-
+# Cloud for our shrine images(Deployment)
+gem 'shrine-cloudinary'
+# Payment system
+gem 'stripe'
 ```
 
 now run
 
 ```
-$ bundle
+$ bundle install
 
 ```
 
 APIs used:
-Google maps API on the Contact page.
+
+**Google maps**
+
+**Stripe**
+
+**MailGun**
 
 ## Design & Planning
-We created the following user stories using Trello.
+I created the following user stories using Trello.
 
-![alt text](https://user-images.githubusercontent.com/30306087/31857425-fa6491e0-b729-11e7-9ac6-2b3ab51519da.png)
+![alt text](./public/trello.jpg)
 
 We used DBdesigner to create the below ERD:
 
-![alt text](https://user-images.githubusercontent.com/30306087/31857436-55a45676-b72a-11e7-97c9-bd9c1ae5a56b.png)
+![alt text](./public/erd.jpg)
 
 Wireframes of the design are found here:
-https://www.figma.com/file/V8bdWj5CHC5O9nt57Jeox3Uo/Pawsome
+
+![alt text](./public/wireframe.jpg)
 
 ## Deployment
-Our web application was deployed using Heroku, and can be found here: http://pawesome.herokuapp.com/. Admin access (to add, edit and delete available dogs) is available upon request.
+My web application was deployed using Heroku, and can be found here: http://powerbanker.herokuapp.com/.
 
 ## Source Code Management
 
-A development environment was created for ensuring our team's MailGun username, password and domain are kept secret on Github.
+A ./env was created and ignored to ensure my secret keys were hidden.
 
 ## Issues Encountered
 
-### Git
-The key issue encountered by the team involved using Git. An early mistake was the creation of multiple, unnecessary branches despite having a small team. This was done because it was believed that each branch should reflect a category of work (i.e. design, admin, user, and puppies), as well as master. Furthermore, one of the branches was unable to merge with any of the others as the history of the branches was radically different, and Github would not allow a merge.
+### GMaps
+The key issue encountered was trying to display Google Maps along with markers which mark the current location of each user nearby. Having to use *Javascript* which I've had no experience with, along with embedded *Ruby*.
 
-The solution was to create only one branch for each team member, and for that team member to constantly push to their branch, submit a pull request, and for all conflicts to be resolved and the work pushed to master, which would then be pulled by the other team members.
+I was able to post the current_user location through Javascript and pass it through params, but unfortunately was unable to save it to the database.
+```
+$.post('/customers/locate',{id: <%= current_user.customer.id %>, lat: position.coords.latitude, lng: position.coords.longitude})
+```
+As the last resort, I made it so when a User were to create a profile, they were to input their current address. This saves their latitude & longitude values into the database, therefore being able to be displayed on the Map.
 
-Another issue we encountered was the uploading of images when deployed to heroku. In development, images were being stored in files when uploaded locally, whereas when deployed images needed a cloud to be stored into.
+### Search
+Another issue I encountered was not being able to search the map based on the Lender's item. Instead a user is able to search based on the Lender table.
 
-The solution to this was to use the cloud based image management gem 'shrine-cloudinary'. This enabled us to upload, store, manage, manipulate and deliver images to our site.
+### Stripe
+I also originally wanted to utilise the
+payment system of paying over time. As a user is borrowing the item. This may possibly be done through a subscription service, but will be looking into this matter in the future.
 
-We also originally wanted to utilise the gem 'geocoder' to display a map locating our adoption center. The gem, however, required a form to be filled out in order to retrieve the latitude and longitude values.
 
-The solution to this was to manually input the values within the associated controller.
-
-## Postgres vs Sqlite3
-A fun new challenge we found right before the deadline, is that sqlite3 will let you search against booleans and integers using the same params as a regular string search. However, when we swapped to PG for heroku deployment, our entire search function errored out with each search, and with only cryptic messages to help us debunk the problems. Trial and error proved best value!
-
-### Favourites
-Originally we sought to complete this by making a new controller that would receive a method - 'favourite or unfavorite" - in the view, which would be sent with a button. This was based on a stack overflow tutorial, which proved problematic. While the routes where correct, it wouldn't accept the button calls.
-
-We instead resorted to removing those and implementing a similar join table which checks a boolean against the button to see if something is true or not.
-
-## Teamwork
-Tasks were divided into various categories and sub-categories. To begin with, they were divided by back-end (Travis & James) and front-end (Carmen). From there, a list was made of all the sub-categories (such as users, puppies, and admin), and individual tasks were assigned to each team member. For example, Travis was responsible for implementing the mailing system; James was responsible for the search functionality; and Carmen was responsible for overall design and UX/UI.
-
-All team members worked together in order to resolve the issues above.
+## Favorites
+My favorite part of building this app was interestingly enough, the biggest challenge. Having to implement a million different ways to retrieve the current_user's current location, I've learnt a lot about using javascript and learning how to pass params correctly. Although in the end, I did not get the result I wanted, I definitely appreciate the knowledge I've gained.

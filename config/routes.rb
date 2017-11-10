@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root 'home#index'
 
-  patch '/customers/locate' => 'customers#location'
+  # post '/customers/locate' => 'customers#location'
 
   resources :items
   resources :customers
